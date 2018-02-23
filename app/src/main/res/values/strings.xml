@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Freehand</string>
+    <string name="app_name">InstagtamClone</string>
+
+    <string name="sign_out">Sign Out</string>
+    <string name="edit_profile">Edit Profile</string>
+
 </resources>
