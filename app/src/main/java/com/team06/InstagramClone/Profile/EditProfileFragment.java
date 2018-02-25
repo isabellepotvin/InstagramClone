@@ -1,5 +1,6 @@
 package com.team06.InstagramClone.Profile;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -29,15 +30,19 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
         mProfilePhoto = (ImageView) view.findViewById(R.id.profile_photo);
 
-        initImageLoader();
         setProfileImage();
 
-        return view;
-    }
+        //back arrow for navigating back to "ProfileActivity"
+        ImageView backArrow = (ImageView) view.findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: navigating back to ProfileActivity");
+                getActivity().finish();
+            }
+        });
 
-    private void initImageLoader(){
-        UniversalImageLoader universalImageLoader = new UniversalImageLoader(getActivity());
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+        return view;
     }
 
     private void setProfileImage(){
