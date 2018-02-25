@@ -39,4 +39,10 @@ dependencies {
     //Universal Image Loader Library
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
+    //firebase
+    compile 'com.google.firebase:firebase-core:11.8.0'
+
 }
+
+//firebase
+apply plugin: 'com.google.gms.google-services'
