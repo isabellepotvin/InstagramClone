@@ -1,6 +1,5 @@
 package com.team06.InstagramClone.Profile;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.team06.InstagramClone.R;
 import com.team06.InstagramClone.Utils.UniversalImageLoader;
 

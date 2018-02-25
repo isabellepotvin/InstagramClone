@@ -23,6 +23,8 @@
         <activity android:name="com.team06.InstagramClone.Search.SearchActivity"></activity>
         <activity android:name="com.team06.InstagramClone.Share.ShareActivity"></activity>
         <activity android:name="com.team06.InstagramClone.Profile.AccountSettingsActivity"></activity>
+        <activity android:name="com.team06.InstagramClone.Login.LoginActivity"></activity>
+        <activity android:name="com.team06.InstagramClone.Login.RegisterActivity"></activity>
 
 
     </application>

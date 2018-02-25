@@ -16,7 +16,7 @@ import com.team06.InstagramClone.R;
 
 public class HomeFragment extends Fragment {
 
-    private static final String TAG = "Home Fragment";
+    private static final String TAG = "com.team06.InstagramClone.Home Fragment";
 
     @Nullable
     @Override
