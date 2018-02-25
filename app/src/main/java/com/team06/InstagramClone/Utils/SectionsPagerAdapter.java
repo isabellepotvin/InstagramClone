@@ -1,4 +1,4 @@
-package com.team06.InstagramClone.Home;
+package com.team06.InstagramClone.Utils;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

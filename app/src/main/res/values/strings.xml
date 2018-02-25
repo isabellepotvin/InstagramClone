@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">InstagtamClone</string>
+    <string name="app_name">InstagramClone</string>
 
-    <string name="sign_out">Sign Out</string>
-    <string name="edit_profile">Edit Profile</string>
+    <string name="sign_out_fragment">Sign Out</string>
+    <string name="edit_profile_fragment">Edit Profile</string>
 
 </resources>
