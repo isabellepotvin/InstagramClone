@@ -2,6 +2,7 @@ package com.team06.InstagramClone.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -21,6 +22,8 @@ import com.team06.InstagramClone.R;
  */
 
 public class UniversalImageLoader {
+
+    private static final String TAG = "UniversalImageLoader"; //I added this for testing purposes
 
     private static final int defaultImage = R.drawable.ic_android;
     private Context mContext;
@@ -58,6 +61,8 @@ public class UniversalImageLoader {
      * @param append
      */
     public static void setImage(String imgURL, ImageView image, final ProgressBar mProgressBar, String append){
+
+        Log.d(TAG, "setImage: Setting Image");  //I added this for testing purposes
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(append + imgURL, image, new ImageLoadingListener() {

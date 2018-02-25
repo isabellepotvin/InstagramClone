@@ -54,14 +54,15 @@ public class ProfileActivity extends AppCompatActivity{
 
     private void tempGridSetup(){
         ArrayList<String> imgURLs = new ArrayList<>();
+
         imgURLs.add("https://mumspantry.com.au/wp-content/uploads/2016/04/how-to-take-great-instagram-photos.jpg");
         imgURLs.add("https://i.pinimg.com/736x/6b/85/e7/6b85e762d16fb83ca0dfb12408810c1b--fog-photography-popular-photography.jpg");
-        imgURLs.add("https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/pile-of-stones-on-beach-dhmig-photography.jpg");
         imgURLs.add("http://coveteur.com/content/uploads/2017/03/best-food-instagram-accounts-1.jpg");
+        imgURLs.add("https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/pile-of-stones-on-beach-dhmig-photography.jpg");
         imgURLs.add("http://www.slrphotographyguide.com/tips/images/beach-horizon.jpg");
-        imgURLs.add("https://www.artinnaturephotography.com/images/xl/prusik-peak-enchantments-larches-20111013_0735.jpg");
-        imgURLs.add("https://blog.hubspot.com/hubfs/food-on-instagram.jpeg?t=1519288838433");
+        imgURLs.add("http://s3.r29static.com//bin/entry/5ce/x,80/1448884/image.jpg");
         imgURLs.add("https://www.thesun.co.uk/wp-content/uploads/2017/06/nintchdbpict000332915143.jpg?strip=all&w=661");
+        imgURLs.add("https://blog.hubspot.com/hubfs/food-on-instagram.jpeg?t=1519288838433");
         imgURLs.add("http://s6.weddbook.com/t4/8/1/8/818870/professional-wedding-photography-unique-creative-wedding-photography-profesyonel-dugun-fotograflari.jpg");
         imgURLs.add("https://spoonuniversity.com/wp-content/uploads/sites/25/2016/02/Screen-Shot-2016-02-19-at-3.55.52-PM.png");
         imgURLs.add("http://allthatsinteresting.com/wordpress/wp-content/uploads/2014/12/nature-photography-2014-red-fox.jpg");
