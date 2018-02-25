@@ -104,8 +104,14 @@ public class HomeActivity extends AppCompatActivity {
      */
 
     /**
-     * checks to see if the @param 'user' is logged in
+     * Setup the firebase auth object
      */
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -114,15 +120,10 @@ public class HomeActivity extends AppCompatActivity {
         updateUI(currentUser);
     }
 
-
     /**
-     * Setup the firebase auth object
+     * checks to see if the @param 'user' is logged in
+     * @param user
      */
-    private void setupFirebaseAuth(){
-        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
-        mAuth = FirebaseAuth.getInstance();
-    }
-
     private void updateUI(FirebaseUser user) {
         Log.d(TAG, "updateUI: checking if user is logged in.");
 

@@ -4,4 +4,10 @@
     <string name="sign_out_fragment">Sign Out</string>
     <string name="edit_profile_fragment">Edit Profile</string>
 
+
+    <!-- Firebase messages -->
+    <string name="auth_failed">Authentication failed.</string>
+    <string name="auth_success">Authentication success.</string>
+
+
 </resources>
