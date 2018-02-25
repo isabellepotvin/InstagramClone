@@ -40,7 +40,6 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
     }
 
-
     private void setProfileImage(){
         Log.d(TAG, "setProfileImage: setting profile image.");
         String imgURL = "www.androidcentral.com/sites/androidcentral.com/files/styles/xlarge/public/article_images/2016/08/ac-lloyd.jpg?itok=bb72IeLf";
