@@ -92,8 +92,11 @@ public class FirebaseMethods {
                         }
                         //if successful
                         else if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: Authstate changed: " + userID);
+                            //send verification email
+                            sendVerificationEmail();
+
                             userID = mAuth.getCurrentUser().getUid();
+                            Log.d(TAG, "onComplete: Authstate changed: " + userID);
 
                         }
 
@@ -104,6 +107,35 @@ public class FirebaseMethods {
 
 
 
+    public void sendVerificationEmail(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user != null){
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+
+                            }else{
+                                Toast.makeText(mContext, "couldn't send verification email.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+        }
+    }
+
+
+    /**
+     * Add information to the users nodes
+     * Add information to the user_account_settings node
+     * @param email
+     * @param username
+     * @param description
+     * @param website
+     * @param profile_photo
+     */
     public void addNewUser( String email, String username, String description, String website, String profile_photo){
 
         User user = new User(userID, 1, email, StringManipulation.condenseUsername(username));

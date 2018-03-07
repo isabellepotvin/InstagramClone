@@ -163,6 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                             Toast.makeText(mContext, "Signup successful. Sending verification email.", Toast.LENGTH_SHORT).show();
 
+                            mAuth.signOut(); //signs the user out so they check the verification email
                         }
 
                         @Override
@@ -170,6 +171,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                         }
                     });
+
+                    finish(); //finishes the activity (goes back to previous activity)
 
                 } else{
                     //user is signed out
