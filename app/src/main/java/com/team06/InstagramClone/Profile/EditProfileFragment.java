@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.team06.InstagramClone.Models.User;
 import com.team06.InstagramClone.Models.UserAccountSettings;
 import com.team06.InstagramClone.Models.UserSettings;
 import com.team06.InstagramClone.R;
@@ -40,6 +41,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
+    private String userID;
 
     //EditProfile fragment widgets
     private EditText mDisplayName, mUsername, mWebsite, mDescription, mEmail, mPhoneNumber;
@@ -83,11 +85,52 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-//    private void setProfileImage(){
-//        Log.d(TAG, "setProfileImage: setting profile image.");
-//        String imgURL = "www.androidcentral.com/sites/androidcentral.com/files/styles/xlarge/public/article_images/2016/08/ac-lloyd.jpg?itok=bb72IeLf";
-//        UniversalImageLoader.setImage(imgURL, mProfilePhoto, null, "https://");
-//    }
+    /**
+     * Retrieves the data contained in the widgets and submits it to the database
+     * Before doing so it checks to make sure the username chosen is unique
+     */
+
+    private void SaveProfileSettings(){
+        final String displayName = mDisplayName.getText().toString();
+        final String username = mUsername.getText().toString();
+        final String website = mWebsite.getText().toString();
+        final String description = mDescription.getText().toString();
+        final String email = mEmail.getText().toString();
+        final long phoneNumber = Long.parseLong(mUsername.getText().toString());
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                User user = new User();
+                for(DataSnapshot ds: dataSnapshot.child(getString(R.string.dnname_users)).getChildren()){
+                    if(ds.getKey().equals(userID)){
+                        user.setUsername(ds.getValue(User.class).getUsername());
+                    }
+                }
+                Log.d(TAG, "onDataChange: CURRENT USERNAME: " + user.getUsername());
+
+                //case1: the user did not change their username
+                if(user.getUsername().equals(username)){
+
+
+                }
+                //case2: the user changed their username therefore we need to check for uniqueness
+                else{
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     private void setProfileWidgets(UserSettings userSettings){
         Log.d(TAG, "setProfileWidgets: settings widgets with data retrieved from firebase database: " + userSettings.toString());
@@ -127,6 +170,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
+        userID = mAuth.getCurrentUser().getUid();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
