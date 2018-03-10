@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.team06.InstagramClone.Models.User;
 import com.team06.InstagramClone.Models.UserAccountSettings;
@@ -47,6 +49,10 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
     private EditText mDisplayName, mUsername, mWebsite, mDescription, mEmail, mPhoneNumber;
     private TextView mChangeProfilePhoto;
     private CircleImageView mProfilePhoto;
+
+    //vars
+    private UserSettings mUserSettings;
+
 
 
 
@@ -82,6 +88,15 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        ImageView checkmark = (ImageView) view.findViewById(R.id.saveChanges);
+        checkmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: attempting to save changes.");
+                saveProfileSettings();
+            }
+        });
+
         return view;
     }
 
@@ -90,30 +105,24 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
      * Before doing so it checks to make sure the username chosen is unique
      */
 
-    private void SaveProfileSettings(){
+    private void saveProfileSettings(){
         final String displayName = mDisplayName.getText().toString();
         final String username = mUsername.getText().toString();
         final String website = mWebsite.getText().toString();
         final String description = mDescription.getText().toString();
         final String email = mEmail.getText().toString();
-        final long phoneNumber = Long.parseLong(mUsername.getText().toString());
+        final long phoneNumber = Long.parseLong(mPhoneNumber.getText().toString());
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                User user = new User();
-                for(DataSnapshot ds: dataSnapshot.child(getString(R.string.dnname_users)).getChildren()){
-                    if(ds.getKey().equals(userID)){
-                        user.setUsername(ds.getValue(User.class).getUsername());
-                    }
-                }
-                Log.d(TAG, "onDataChange: CURRENT USERNAME: " + user.getUsername());
+
+
 
                 //case1: the user did not change their username
-                if(user.getUsername().equals(username)){
-
-
+                if(!mUserSettings.getUser().getUsername().equals(username)){ //compares previous username to username in text field
+                    checkIfUsernameExists(username);
                 }
                 //case2: the user changed their username therefore we need to check for uniqueness
                 else{
@@ -132,11 +141,51 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
     }
 
-    private void setProfileWidgets(UserSettings userSettings){
+    /**
+     * Check if @param username already exists in the databse
+     * @param username
+     */
+    private void checkIfUsernameExists(final String username) {
+        Log.d(TAG, "checkIfUsernameExists: checking if " +  username + " already exists");
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                .child(getString(R.string.dnname_users))
+                .orderByChild(getString(R.string.field_username))
+                .equalTo(username);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    //add the username
+                    mFirebaseMethods.updateUsername(username);
+                    Toast.makeText(getActivity(), "saved username.", Toast.LENGTH_SHORT).show();
+
+                }
+                for(DataSnapshot signleSnapshot: dataSnapshot.getChildren()){
+                    if(signleSnapshot.exists()){
+                        Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + signleSnapshot.getValue(User.class).getUsername());
+
+                        Toast.makeText(getActivity(), "That username already exists.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void setProfileWidgets(UserSettings userSettings) {
         Log.d(TAG, "setProfileWidgets: settings widgets with data retrieved from firebase database: " + userSettings.toString());
         Log.d(TAG, "setProfileWidgets: settings widgets with data retrieved from firebase database: " + userSettings.getUser().getEmail());
         Log.d(TAG, "setProfileWidgets: settings widgets with data retrieved from firebase database: " + userSettings.getUser().getPhone_number());
 
+        mUserSettings = userSettings;
         //User user = userSettings.getUser();
         UserAccountSettings settings = userSettings.getSettings();
 
@@ -148,8 +197,6 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         mDescription.setText(settings.getDescription());
         mEmail.setText(userSettings.getUser().getEmail());
         mPhoneNumber.setText(String.valueOf(userSettings.getUser().getPhone_number()));
-
-
 
     }
 
