@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.team06.InstagramClone.Dialogs.ConfirmPasswordDialog;
 import com.team06.InstagramClone.Models.User;
 import com.team06.InstagramClone.Models.UserAccountSettings;
 import com.team06.InstagramClone.Models.UserSettings;
@@ -113,31 +114,27 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         final String email = mEmail.getText().toString();
         final long phoneNumber = Long.parseLong(mPhoneNumber.getText().toString());
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+
+        //case1: if the user made a change to their username
+        if(!mUserSettings.getUser().getUsername().equals(username)){ //compares previous username to username in text field
+            checkIfUsernameExists(username);
+        }
+        //case2: if the user made a change to their email
+        if(!mUserSettings.getUser().getEmail().equals(email)){
+
+            //step 1: reauthenticate
+            //          - Confirm the password and email
+
+            ConfirmPasswordDialog dialog = new ConfirmPasswordDialog();
+            dialog.show(getFragmentManager(), getString(R.string.confirm_password_dialog));
 
 
+            //step 2: check if the email already is registered
+            //          - 'fetchProvidersForEmail(String email)' //will check the authentication database to see if that email is available
+            //step 3: change the email
+            //          - submit the new email to the database and authentication
+        }
 
-
-                //case1: the user did not change their username
-                if(!mUserSettings.getUser().getUsername().equals(username)){ //compares previous username to username in text field
-                    checkIfUsernameExists(username);
-                }
-                //case2: the user changed their username therefore we need to check for uniqueness
-                else{
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
     }
 

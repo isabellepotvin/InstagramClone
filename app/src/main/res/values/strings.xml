@@ -7,6 +7,9 @@
     <string name="profile_fragment">Profile</string>
 
 
+    <!--dialog names-->
+    <string name="confirm_password_dialog">ConfirmPasswordDialog</string>
+
     <!-- Firebase messages -->
     <string name="auth_failed">Authentication failed.</string>
     <string name="auth_success">Authentication success.</string>
