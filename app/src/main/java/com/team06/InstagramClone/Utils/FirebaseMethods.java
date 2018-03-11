@@ -48,6 +48,50 @@ public class FirebaseMethods {
         }
     }
 
+
+    /**
+     * Update 'user_account_settings node for the current user
+     * @param displayName
+     * @param website
+     * @param description
+     * @param phoneNumber
+     */
+    public void updateUserAccountSettings(String displayName, String website, String description, long phoneNumber){
+        Log.d(TAG, "updateUserAccountSettings: updating user account settings.");
+
+        //updates user account settings node
+
+        if(displayName != null) {
+            myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+                    .child(userID)
+                    .child(mContext.getString(R.string.field_display_name))
+                    .setValue(displayName);
+        }
+
+        if(website != null) {
+            myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+                    .child(userID)
+                    .child(mContext.getString(R.string.field_website))
+                    .setValue(website);
+        }
+
+        if(description != null) {
+            myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+                    .child(userID)
+                    .child(mContext.getString(R.string.field_description))
+                    .setValue(description);
+        }
+
+        if(phoneNumber != 0) {
+            myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+                    .child(userID)
+                    .child(mContext.getString(R.string.field_phone_number))
+                    .setValue(phoneNumber);
+        }
+
+    }
+
+
     /**
      * update username in the 'users' node and 'user_account_settings' node
      * @param username
@@ -67,6 +111,7 @@ public class FirebaseMethods {
                 .child(mContext.getString(R.string.field_username))
                 .setValue(username);
     }
+
 
     /**
      * update the email in the 'users' node
