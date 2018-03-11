@@ -3,6 +3,7 @@ package com.team06.InstagramClone.Profile;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by isabellepotvin on 2018-02-24.
  */
 
-public class EditProfileFragment extends android.support.v4.app.Fragment {
+public class EditProfileFragment extends Fragment implements ConfirmPasswordDialog.OnConfirmPasswordListener {
+
+    @Override
+    public void onConfirmPasswordPassword(String password) {
+        Log.d(TAG, "onConfirmPasswordPassword: got the password " + password); //just for testing // you never want to print passwords to a log
+    }
 
     private static final String TAG = "EditProfileFragment";
 
@@ -127,6 +133,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
             ConfirmPasswordDialog dialog = new ConfirmPasswordDialog();
             dialog.show(getFragmentManager(), getString(R.string.confirm_password_dialog));
+            dialog.setTargetFragment(EditProfileFragment.this, 1); //once the dialog closes, this is its target fragment
 
 
             //step 2: check if the email already is registered
@@ -267,6 +274,5 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
 
 }
