@@ -18,6 +18,7 @@
     <string name="dnname_users">users</string>
     <string name="dnname_user_account_settings">user_account_settings</string>
     <string name="field_username">username</string>
+    <string name="field_email">email</string>
 
     <!--Intent Extras-->
     <string name="calling_activity">calling_activity</string>
