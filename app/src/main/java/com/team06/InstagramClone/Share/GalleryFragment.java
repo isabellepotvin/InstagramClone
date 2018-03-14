@@ -26,6 +26,7 @@ public class GalleryFragment extends Fragment {
 
         Log.d(TAG, "onCreateView: started.");
 
+
         return view;
     }
 }
