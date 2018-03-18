@@ -241,7 +241,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference
-                .child(getString(R.string.dnname_users))
+                .child(getString(R.string.dbname_users))
                 .orderByChild(getString(R.string.field_username))
                 .equalTo(username);
 

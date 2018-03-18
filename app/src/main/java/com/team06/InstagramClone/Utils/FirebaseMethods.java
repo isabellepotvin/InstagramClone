@@ -21,11 +21,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.team06.InstagramClone.Models.Photo;
 import com.team06.InstagramClone.Models.UserSettings;
 import com.team06.InstagramClone.R;
 
 import com.team06.InstagramClone.Models.User;
 import com.team06.InstagramClone.Models.UserAccountSettings;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by isabellepotvin on 2018-02-25.
@@ -61,7 +67,7 @@ public class FirebaseMethods {
     }
 
 
-    public void uploadNewPhoto(String photoType, String caption, int count, String imgUrl){
+    public void uploadNewPhoto(String photoType, final String caption, final int count, final String imgUrl){
         Log.d(TAG, "uploadNewPhoto: attempting to upload new photo.");
 
         FilePaths filePaths = new FilePaths();
@@ -90,6 +96,7 @@ public class FirebaseMethods {
                     Toast.makeText(mContext, "photo upload success", Toast.LENGTH_SHORT).show();
 
                     //add the new photo to 'photos' node and 'user_photos' node
+                    addPhotoToDatabase(caption, firebaseUrl.toString());
 
                     //navigate to the main feed so the user can see their photo
 
@@ -128,10 +135,39 @@ public class FirebaseMethods {
 
     }
 
+
+    private String getTimestamp(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.CANADA);
+        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Eastern"));
+        return sdf.format(new Date());
+    }
+
+    private void addPhotoToDatabase(String caption, String url){
+        Log.d(TAG, "addPhotoToDatabase: adding photo to database.");
+
+        String tags = StringManipulation.getTags(caption);
+        String newPhotoKey = myRef.child(mContext.getString(R.string.dbname_photos)).push().getKey();
+        Photo photo = new Photo();
+        photo.setCaption(caption);
+        photo.setDate_created(getTimestamp());
+        photo.setImage_path(url);
+        photo.setTags(tags);
+        photo.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        photo.setPhoto_id(newPhotoKey);
+
+        //insert into database
+        myRef.child(mContext.getString(R.string.dbname_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(newPhotoKey).setValue(photo);
+
+        myRef.child(mContext.getString(R.string.dbname_photos)).child(newPhotoKey).setValue(photo);
+
+    }
+
     public int getImageCount(DataSnapshot dataSnapshot){
         int count = 0;
         for(DataSnapshot ds: dataSnapshot
-                .child(mContext.getString(R.string.dnname_user_photos))
+                .child(mContext.getString(R.string.dbname_user_photos))
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .getChildren()){
             count++;
@@ -154,28 +190,28 @@ public class FirebaseMethods {
         //updates user account settings node
 
         if(displayName != null) {
-            myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+            myRef.child(mContext.getString(R.string.dbname_user_account_settings))
                     .child(userID)
                     .child(mContext.getString(R.string.field_display_name))
                     .setValue(displayName);
         }
 
         if(website != null) {
-            myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+            myRef.child(mContext.getString(R.string.dbname_user_account_settings))
                     .child(userID)
                     .child(mContext.getString(R.string.field_website))
                     .setValue(website);
         }
 
         if(description != null) {
-            myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+            myRef.child(mContext.getString(R.string.dbname_user_account_settings))
                     .child(userID)
                     .child(mContext.getString(R.string.field_description))
                     .setValue(description);
         }
 
         if(phoneNumber != 0) {
-            myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+            myRef.child(mContext.getString(R.string.dbname_user_account_settings))
                     .child(userID)
                     .child(mContext.getString(R.string.field_phone_number))
                     .setValue(phoneNumber);
@@ -192,13 +228,13 @@ public class FirebaseMethods {
         Log.d(TAG, "updateUsername: updating username to " + username);
 
         //updates users node
-        myRef.child(mContext.getString(R.string.dnname_users))
+        myRef.child(mContext.getString(R.string.dbname_users))
                 .child(userID)
                 .child(mContext.getString(R.string.field_username))
                 .setValue(username);
 
         //updates user account settings node
-        myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+        myRef.child(mContext.getString(R.string.dbname_user_account_settings))
                 .child(userID)
                 .child(mContext.getString(R.string.field_username))
                 .setValue(username);
@@ -213,7 +249,7 @@ public class FirebaseMethods {
         Log.d(TAG, "updateEmail: updating email to " + email);
 
         //updates users node
-        myRef.child(mContext.getString(R.string.dnname_users))
+        myRef.child(mContext.getString(R.string.dbname_users))
                 .child(userID)
                 .child(mContext.getString(R.string.field_email))
                 .setValue(email);
@@ -313,7 +349,7 @@ public class FirebaseMethods {
         User user = new User(userID, 1, email, StringManipulation.condenseUsername(username));
 
         //users node
-        myRef.child(mContext.getString(R.string.dnname_users))
+        myRef.child(mContext.getString(R.string.dbname_users))
                 .child(userID)
                 .setValue(user);
 
@@ -328,7 +364,7 @@ public class FirebaseMethods {
                 website
         );
 
-        myRef.child(mContext.getString(R.string.dnname_user_account_settings))
+        myRef.child(mContext.getString(R.string.dbname_user_account_settings))
                 .child(userID)
                 .setValue(settings);
     }
@@ -348,7 +384,7 @@ public class FirebaseMethods {
         for(DataSnapshot ds: dataSnapshot.getChildren()){
 
             // user_account_settings node
-            if(ds.getKey().equals(mContext.getString(R.string.dnname_user_account_settings))){ //user account settings node
+            if(ds.getKey().equals(mContext.getString(R.string.dbname_user_account_settings))){ //user account settings node
                 Log.d(TAG, "getUserAccountSettings: datasnapshot: " + ds); //useful for debugging
                 //Log.d(TAG, "getUserAccountSettings: datasnapshot: " + ds.child(userID)); //useful for debugging
 
@@ -411,7 +447,7 @@ public class FirebaseMethods {
             }
 
             // users node
-            if(ds.getKey().equals(mContext.getString(R.string.dnname_users))) { //user account settings node
+            if(ds.getKey().equals(mContext.getString(R.string.dbname_users))) { //user account settings node
                 Log.d(TAG, "getUserAccountSettings: datasnapshot: " + ds); //useful for debugging
 
                 user.setUsername(

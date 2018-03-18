@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.InputDevice;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -141,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
         //checking username
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference
-                .child(getString(R.string.dnname_users))
+                .child(getString(R.string.dbname_users))
                 .orderByChild(getString(R.string.field_username))
                 .equalTo(username);
 
