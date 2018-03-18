@@ -42,12 +42,16 @@ public class UniversalImageLoader {
                 .cacheOnDisk(true).cacheInMemory(true)
                 .cacheOnDisk(true).resetViewBeforeLoading(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
-                .displayer(new FadeInBitmapDisplayer(300)).build();
+                .displayer(new FadeInBitmapDisplayer(300))
+                .bitmapConfig(Bitmap.Config.RGB_565) //added this to deal with out of memory an error
+                .build();
 
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(mContext)
                 .defaultDisplayImageOptions(defaultOptions)
                 .memoryCache(new WeakMemoryCache())
-                .diskCacheSize(100 * 1024 * 1024).build();
+                .diskCacheSize(100 * 1024 * 1024)
+                .diskCacheExtraOptions(480, 320, null) //added this to deal with out of memory an error
+                .build();
 
         return configuration;
     }
