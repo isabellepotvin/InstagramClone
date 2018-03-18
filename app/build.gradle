@@ -47,6 +47,9 @@ dependencies {
     //firebase database
     compile 'com.google.firebase:firebase-database:11.8.0'
 
+    //firebase storage
+    compile 'com.google.firebase:firebase-storage:11.8.0'
+
 }
 
 //firebase
