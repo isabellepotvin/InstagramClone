@@ -25,6 +25,7 @@ import com.google.firebase.storage.UploadTask;
 import com.team06.InstagramClone.Home.HomeActivity;
 import com.team06.InstagramClone.Models.Photo;
 import com.team06.InstagramClone.Models.UserSettings;
+import com.team06.InstagramClone.Profile.AccountSettingsActivity;
 import com.team06.InstagramClone.R;
 
 import com.team06.InstagramClone.Models.User;
@@ -133,6 +134,12 @@ public class FirebaseMethods {
         //case 2: new profile photo
         else if(photoType.equals(mContext.getString(R.string.profile_photo))){
             Log.d(TAG, "uploadNewPhoto: uploading new PROFILE photo.");
+
+            //sets the viewpager to the edit_profile_fragment
+            ((AccountSettingsActivity)mContext).setViewPager(
+                    ((AccountSettingsActivity)mContext).pagerAdapter
+                            .getFragmentNumber(mContext.getString(R.string.edit_profile_fragment))
+            );
 
             String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
             StorageReference storageReference = mStorageReference
