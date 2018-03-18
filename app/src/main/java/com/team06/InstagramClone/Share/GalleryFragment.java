@@ -1,5 +1,6 @@
 package com.team06.InstagramClone.Share;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,6 +48,7 @@ public class GalleryFragment extends Fragment {
     //vars
     private ArrayList<String> directories;
     private String mAppend = "file:/";
+    private String mSelectedImage;
 
     @Nullable
     @Override
@@ -79,6 +81,10 @@ public class GalleryFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: navigating to the final share screen.");
 
+                Intent intent = new Intent(getActivity(), NextActivity.class);
+                intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                startActivity(intent);
+
             }
         });
 
@@ -94,12 +100,22 @@ public class GalleryFragment extends Fragment {
         //check for other folders inside "/storage/emulated/0/pictures"
         if(FileSearch.getDirectoryPaths(filePaths.PICTURES) != null){
             directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
+            //Log.d(TAG, "init: " + directories); //I added this for testing
         }
 
         directories.add(filePaths.CAMERA);
 
+        //to remove the all the directory breadcrumbs
+        ArrayList<String> directoryNames = new ArrayList<>();
+        for(int i = 0; i < directories.size(); i++){
+            //Log.d(TAG, "init: " + directories.size()); //I added this for testing
+            int index = directories.get(i).lastIndexOf("/") + 1; //added +1 to remove slash
+            String string = directories.get(i).substring(index);
+            directoryNames.add(string);
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, directories);
+                android.R.layout.simple_spinner_item, directoryNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         directorySpinner.setAdapter(adapter); //will display all directories inside pictures and camera
@@ -138,6 +154,8 @@ public class GalleryFragment extends Fragment {
 
         //set the first image to be displayed when the activity fragment view is inflated
         setImage(imgURLs.get(0), galleryImage, mAppend);
+        mSelectedImage = imgURLs.get(0);
+
 
         //set images to be displayed when they are clicked
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,6 +164,7 @@ public class GalleryFragment extends Fragment {
                 Log.d(TAG, "onItemClick: selected an image: " + imgURLs.get(position));
 
                 setImage(imgURLs.get(position), galleryImage, mAppend);
+                mSelectedImage = imgURLs.get(position);
             }
         });
 

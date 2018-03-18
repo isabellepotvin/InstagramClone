@@ -59,7 +59,7 @@ public class GridImageAdapter extends ArrayAdapter<String>{
         Viewholder build pattern (Similar to recyclerview)
          */
 
-        Log.d(TAG, "getView: Getting View.");  //I added this for testing purposes
+        //Log.d(TAG, "getView: Getting View.");  //I added this for testing purposes
 
         final ViewHolder holder;
         if(convertView == null){
@@ -84,7 +84,7 @@ public class GridImageAdapter extends ArrayAdapter<String>{
             public void onLoadingStarted(String imageUri, View view) {
                 if(holder.mProgressBar != null){
                     holder.mProgressBar.setVisibility(View.VISIBLE);
-                    Log.d(TAG, "onLoadingStarted: Loading Started.");  //I added this for testing purposes
+                    //Log.d(TAG, "onLoadingStarted: Loading Started.");  //I added this for testing purposes
                 }
             }
 
@@ -99,7 +99,7 @@ public class GridImageAdapter extends ArrayAdapter<String>{
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 if(holder.mProgressBar != null){
                     holder.mProgressBar.setVisibility(View.GONE);
-                    Log.d(TAG, "onLoadingComplete: Loading Complete.");  //I added this for testing purposes
+                    //Log.d(TAG, "onLoadingComplete: Loading Complete.");  //I added this for testing purposes
                 }
             }
 
