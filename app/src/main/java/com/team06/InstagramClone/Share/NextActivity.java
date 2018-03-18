@@ -38,6 +38,8 @@ public class NextActivity extends AppCompatActivity {
 
     //vars
     private String mAppend = "file:/";
+    private int imageCount = 0;
+
 
 
 
@@ -48,6 +50,8 @@ public class NextActivity extends AppCompatActivity {
         setContentView(R.layout.activity_next);
 
         //Log.d(TAG, "onCreate: got the chosen image: " + getIntent().getStringExtra(getString(R.string.selected_image)));
+
+        mFirebaseMethods = new FirebaseMethods(NextActivity.this);
 
         setupFirebaseAuth();
 
@@ -92,6 +96,7 @@ public class NextActivity extends AppCompatActivity {
             a) Upload the photo to Firebase Storage
             b) insert into 'photos' node
             c) insert into 'user_photos' node
+
          */
     }
 
@@ -120,6 +125,7 @@ public class NextActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
+        Log.d(TAG, "onDataChange: image count: " + imageCount);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -143,6 +149,8 @@ public class NextActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                imageCount = mFirebaseMethods.getImageCount(dataSnapshot); //gets the image count
+                Log.d(TAG, "onDataChange: image count: " + imageCount);
             }
 
             @Override
