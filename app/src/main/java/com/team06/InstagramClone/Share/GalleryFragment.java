@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.team06.InstagramClone.Profile.AccountSettingsActivity;
 import com.team06.InstagramClone.R;
 import com.team06.InstagramClone.Utils.FilePaths;
 import com.team06.InstagramClone.Utils.FileSearch;
@@ -81,9 +82,16 @@ public class GalleryFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: navigating to the final share screen.");
 
-                Intent intent = new Intent(getActivity(), NextActivity.class);
-                intent.putExtra(getString(R.string.selected_image), mSelectedImage);
-                startActivity(intent);
+                if(isRootTask()){ //new share photo
+                    Intent intent = new Intent(getActivity(), NextActivity.class);
+                    intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                    startActivity(intent);
+                }else{ //new profile photo
+                    Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                    intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                    intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.edit_profile_fragment));
+                    startActivity(intent);
+                }
 
             }
         });
@@ -93,6 +101,15 @@ public class GalleryFragment extends Fragment {
         return view;
     }
 
+
+    private boolean isRootTask(){
+        if(((ShareActivity)getActivity()).getTask() == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     private void init(){
         FilePaths filePaths = new FilePaths();
