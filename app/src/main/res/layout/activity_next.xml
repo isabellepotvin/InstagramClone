@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/relLayout1"
                 android:id="@+id/relLayout2"
-                android:background="@drawable/grey_border_bottom">
+                android:background="@drawable/grey_border_bottom"
+                >
     
                 <ImageView
                     android:layout_width="100dp"
